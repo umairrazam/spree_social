@@ -2,6 +2,7 @@ require 'stringex'
 
 class Spree::AuthenticationMethod < ActiveRecord::Base
   validates :provider, :api_key, :api_secret, presence: true
+  scope     :active, -> { where(active: true) }
 
   def self.active_authentication_methods?
     where(environment: ::Rails.env, active: true).exists?
