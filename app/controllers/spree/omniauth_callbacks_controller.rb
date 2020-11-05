@@ -17,6 +17,7 @@ class Spree::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
           authentication = Spree::UserAuthentication.find_by_provider_and_uid(kind_name, auth_hash['uid'])
 
+          create_missing_authentication(kind_name,auth_hash['uid']) if (authentication.nil? && check_if_provider_missed_authentication(kind_name))
           if authentication.present? and authentication.try(:user).present?
             flash[:notice] = I18n.t('devise.omniauth_callbacks.success', kind: kind_name)
             sign_in_and_redirect :spree_user, authentication.user
@@ -69,4 +70,34 @@ class Spree::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def auth_hash
     request.env['omniauth.auth']
   end
+
+  def create_missing_authentication(provider,uid)
+
+    if provider.present? && uid.present?
+      user_obj = {
+        email:                  "john-smith#{uid}@gmail.com",
+        password:               "dummyPassword12345678.",
+        password_confirmation:  "dummyPassword12345678.",
+        first_name: uid
+      }
+      user = Spree::User.new
+      user.attributes = user_obj
+      user.skip_confirmation!
+      if user.save(validate: false)
+        new_authentication_obj = {
+          provider: provider,
+          uid: uid,
+          user: user
+        }
+        authentication = Spree::UserAuthentication.new(new_authentication_obj)
+        authentication.save
+      end
+    end
+
+  end
+
+  def check_if_provider_missed_authentication(provider)
+    ['instagram'].include?(provider)
+  end
+
 end
