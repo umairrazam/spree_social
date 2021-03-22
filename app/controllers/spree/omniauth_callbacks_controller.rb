@@ -32,7 +32,6 @@ class Spree::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             user.password               =   "dummyPassword12345678."  
             user.password_confirmation  =   "dummyPassword12345678."  
             user.first_name             =   user.email.split("@")[0] rescue ""
-            user.skip_confirmation!
             if user.save(validate: false) 
               flash[:notice] = I18n.t('devise.omniauth_callbacks.success', kind: kind_name)
               sign_in_and_redirect :spree_user, user
@@ -42,12 +41,6 @@ class Spree::OmniauthCallbacksController < Devise::OmniauthCallbacksController
               redirect_to new_spree_user_registration_url
               return
             end
-          end
-
-          if current_order
-            user = spree_current_user || authentication.user
-            current_order.associate_user!(user)
-            session[:guest_token] = nil
           end
         end
       FUNCTION_DEFS
