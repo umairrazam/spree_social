@@ -1,16 +1,32 @@
-<div id="social-signin-links" class="border-top mt-3 pt-3">
-  <% if (!spree_current_user || !spree_current_user.user_authentications) && Spree::AuthenticationMethod.active_authentication_methods? %>
-    <h4 class="text-center h5">
-      <%= Spree.t(:sign_in_through_one_of_these_services) %>
-    </h4>
-  <% end %>
+<style>
+  .custom{
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    width: 14rem;
+    height: 3.5rem;
+    background-color: #ff6347;
+    color: #fff;
+    text-decoration: none;
+  }
 
+  .icon-spree-facebook {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    width: 14rem;
+    height: 3.5rem;
+    background-color: #3A5A97;
+    color: #fff;
+    text-decoration: none;
+  }
+</style>
+
+<div id="social-signin-links" class="border-top mt-3 pt-3">
   <div class="text-center">
     <% Spree::AuthenticationMethod.available_for(@spree_user).each do |method| %>
       <%= link_to(
         content_tag(:i,
-          '',
-          class: "d-inline-block icon-spree-#{method.provider.to_url}-circled"
+          method.provider == 'google_oauth2' ? method.provider.slice(0, 6) : method.provider,
+          class: "d-inline-block icon-spree-#{method.provider.to_url} custom"
         ),
         path_for_omniauth(@spree_user, method.provider),
         id: method.provider.to_url,
