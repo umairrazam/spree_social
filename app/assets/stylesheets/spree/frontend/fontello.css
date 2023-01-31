@@ -52,6 +52,26 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
+.custom_social_btn{
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  width: 14rem;
+  height: 3.5rem;
+  background-color: #ff6347;
+  color: #fff;
+  text-decoration: none;
+}
+
+.icon-spree-facebook {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  width: 14rem;
+  height: 3.5rem;
+  background-color: #3A5A97;
+  color: #fff;
+  text-decoration: none;
+}
+  
 .icon-spree-github:before { content: '\e800'; } /* '' */
 .icon-spree-github-circled:before { content: '\e801'; } /* '' */
 .icon-spree-twitter:before { content: '\e802'; } /* '' */
